@@ -2,4 +2,5 @@
 *.sqlite3
 .idea
 frontend/node_modules
+djangovuetest/__pycache__/
 
