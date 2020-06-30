@@ -60,6 +60,9 @@
 </template>
 
 <script>
+
+  import axios from 'axios';
+
     export default {
       name: "Form",
       data() {
@@ -76,7 +79,19 @@
           submitForm(){
             console.log(this.fechavalue)
           }
-        }
+        },
+      created() {
+        axios.get('http://127.0.0.1:8000/api/users/')
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+
+
+      }
     }
 </script>
 
