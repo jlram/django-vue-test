@@ -13,9 +13,13 @@ TIPO_CHOICES = (
 class Note(models.Model):
     date = models.DateField(null=False, default=datetime.now)
     end_date = models.DateField()
-    note = models.TextField(max_length=280)
+    note = models.TextField(max_length=280, null=False)
     adjunto = models.FileField(upload_to='adjuntos/', null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', null=False)
     task = models.BooleanField(default=False)
-    tag = models.CharField(max_length=280)
-    type = models.CharField(choices=TIPO_CHOICES, max_length=50)
+    tag = models.CharField(max_length=280, null=False)
+    type = models.CharField(choices=TIPO_CHOICES, max_length=50, null=False)
+
+    def __str__(self):
+        return str(self.id) + ' Nota ' + str(self.user) + ' ' + str(self.date)
+
