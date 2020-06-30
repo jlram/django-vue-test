@@ -1,5 +1,10 @@
 {
-  "name": "frontend",
+  "name": "frontend",  "dependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
+    "bootstrap-vue": "^2.15.0",
+    "vue": "^2.5.2"
+  },
   "version": "1.0.0",
   "description": "",
   "author": "jlram",
@@ -10,6 +15,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
+    "bootstrap-vue": "^2.15.0",
     "vue": "^2.5.2"
   },
   "devDependencies": {
