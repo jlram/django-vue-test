@@ -3,4 +3,5 @@
 .idea
 frontend/node_modules
 djangovuetest/__pycache__/
+djangovuetest/notes/__pycache__/
 
