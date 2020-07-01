@@ -6,7 +6,6 @@
     <NoteList></NoteList>
   </b-container>
   </div>
-
 </template>
 
 <script>
@@ -16,7 +15,7 @@
 
 
   export default {
-      name: "Landing",
+    name: "Landing",
     components: {
         Form,
         NoteList,

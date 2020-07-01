@@ -24,7 +24,7 @@
       </b-col>
 
       <b-col cols="12" lg="6" class="">
-          <label for="tags" id="label-user">Elige un usuario al que asignarle la Nota</label>
+          <label for="tags" id="label-user">Elige el usuario asignado</label>
           <b-form-select v-model="user" :options="options"></b-form-select>
 
           <label for="tags" class="mt-4">Elige un tipo de Nota</label>
@@ -99,6 +99,8 @@
             text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
           });
 
+          vm.$root.$emit('refresh');
+
         })
         .catch(function (error) {
           console.log(error);
@@ -121,9 +123,6 @@
         .catch(function (error) {
           console.log(error);
         });
-
-
-
     }
   }
 </script>

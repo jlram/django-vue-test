@@ -15,8 +15,13 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class NoteViewSet(viewsets.ModelViewSet):
-    queryset = Note.objects.all()
+    queryset = Note.objects.all().order_by('-date')
     serializer_class = NoteSerializer
+
+    def list(self, request):
+        queryset = Note.objects.all().order_by('-id')
+        serializer = NoteSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def create(self, validated_data):
         note = Note.objects.create(

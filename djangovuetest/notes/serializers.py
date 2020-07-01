@@ -14,7 +14,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class NoteSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username')
     class Meta:
         model = Note
-        fields = '__all__'
+        fields = ['id', 'date', 'end_date', 'note', 'adjunto', 'username', 'task', 'tag', 'type']
 
