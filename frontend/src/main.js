@@ -10,6 +10,8 @@ import axios from 'axios';
 
 Vue.prototype.$axios = axios; // Declaracion global de axios para usarse
                               // en todos los componentes
+
+// Declaracion de Bootstrap y Notifications
 Vue.use(BootstrapVue)
 Vue.use(Notifications)
 

@@ -10,6 +10,7 @@
 </template>
 
 <script>
+    // Componente situado en la parte superior de la app
     export default {
         name: "NavBar"
     }

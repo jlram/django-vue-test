@@ -7,7 +7,6 @@
 </template>
 
 <script>
-
   import Landing from './pages/Landing';
 
 

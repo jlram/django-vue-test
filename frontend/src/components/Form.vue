@@ -61,6 +61,7 @@
 <script>
   export default {
     name: "Form",
+    // Variables principalmente presentes en el v-model para recoger la informacion del form.
     data() {
       return({
         user: true,
@@ -79,6 +80,8 @@
 
         const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
+        // Creamos un FormData para recoger toda la informacion que se va a
+        // pasar en el POST
         let bodyFormData = new FormData();
 
         bodyFormData.set('end_date', this.fechavalue);
@@ -89,37 +92,44 @@
         bodyFormData.set('user', this.user);
         bodyFormData.append('adjunto', document.getElementById('file').files[0]);
 
+        // Comprobamos que el FormData es valido para despues hacer una llamada a la API con axios.
         if(bodyFormData.get('tag') && bodyFormData.get('note') && bodyFormData.get('type')
           && bodyFormData.get('user') && bodyFormData.get('adjunto')) {
           this.$axios({
             method: 'post',
             url: 'http://127.0.0.1:8000/notes/',
             data: bodyFormData,
-            headers: {'Content-Type': 'multipart/form-data' }
-            })
+            headers: {'Content-Type': 'multipart/form-data' } // Como contiene ficheros, cambiamos
+            })                                                // el tipo de contenido
             .then(function (response) {
-                console.log(response);
+              console.log(response);
 
-               vm.$notify({
+              // Notificacion que muestra la subida correcta
+              vm.$notify({
                 group: 'foo',
                 type: 'success',
                 title: 'Nota subida con éxito',
                 text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
               });
 
+              // Uso de un bus para emitir eventos entre componentes. Podria haber usado Vuex
+              // pero no lo he visto necesario para tan solo un evento.
               vm.$root.$emit('refresh');
 
             })
             .catch(function (error) {
-                console.log(error);
-                vm.$notify({
-                  group: 'foo',
-                  type: 'error',
-                  title: 'Ha ocurrido un error',
-                  text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
-                });
+              console.log(error);
+              // Notificacion que muestra el error
+              vm.$notify({
+                group: 'foo',
+                type: 'error',
+                title: 'Ha ocurrido un error',
+                text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
+              });
             });
         } else {
+
+            // Si el formulario no es valido, se notifica al usuario
             vm.$notify({
               group: 'foo',
               type: 'warn',
@@ -129,9 +139,11 @@
         }
       }
     },
-    mounted() {
+    mounted() { // Metodo del ciclo de vida que se activa al montar el componente
       const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
+      // Recoge los users de la BBDD para asi rellenar el select en el que podemos elegir
+      // a que user asignar la Note
       this.$axios.get('http://127.0.0.1:8000/users/')
         .then(function (response) {
           response.data.forEach(user => vm.options.push(user.username));

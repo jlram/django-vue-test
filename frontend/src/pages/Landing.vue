@@ -13,7 +13,7 @@
   import NoteList from '../components/NoteList'
   import NavBar from '../components/NavBar'
 
-
+  // Componente que va a cargar tanto el NavBar, como el formulario y la lista de Notes
   export default {
     name: "Landing",
     components: {
