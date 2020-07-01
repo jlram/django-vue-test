@@ -79,9 +79,8 @@
 
         const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
-        console.log(document.getElementById('file').files[0])
-
         let bodyFormData = new FormData();
+
         bodyFormData.set('end_date', this.fechavalue);
         bodyFormData.set('note', this.text);
         bodyFormData.set('task', this.status === 'task');
@@ -90,77 +89,50 @@
         bodyFormData.set('user', this.user);
         bodyFormData.append('adjunto', document.getElementById('file').files[0]);
 
+        if(bodyFormData.get('tag') && bodyFormData.get('note') && bodyFormData.get('type')
+          && bodyFormData.get('user') && bodyFormData.get('adjunto')) {
+          this.$axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/notes/',
+            data: bodyFormData,
+            headers: {'Content-Type': 'multipart/form-data' }
+            })
+            .then(function (response) {
+                console.log(response);
 
-        this.$axios({
-          method: 'post',
-          url: 'http://127.0.0.1:8000/api/notes/',
-          data: bodyFormData,
-          headers: {'Content-Type': 'multipart/form-data' }
-          })
-          .then(function (response) {
-              console.log(response);
-
-             vm.$notify({
-              group: 'foo',
-              type: 'success',
-              title: 'Nota subida con éxito',
-              text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
-            });
-
-            vm.$root.$emit('refresh');
-
-          })
-          .catch(function (error) {
-              console.log(error);
-              vm.$notify({
+               vm.$notify({
                 group: 'foo',
-                type: 'error',
-                title: 'Ha ocurrido un error',
-                text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
+                type: 'success',
+                title: 'Nota subida con éxito',
+                text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
               });
-          });
 
-        // this.$axios('http://127.0.0.1:8000/api/notes/', {
-        //   end_date: this.fechavalue,
-        //   note: this.text,
-        //   adjunto: document.getElementById('file').files[0],
-        //   task: status === 'task',
-        //   tag: this.tag,
-        //   type: this.tipo,
-        //   user: this.user
-        // }, {
-        //   headers: {
-        //     "Content-Type": 'multipart/form-data'
-        //   }
-        // })
-        //   .then(function (response) {
-        //     console.log(response);
-        //
-        //     vm.$notify({
-        //       group: 'foo',
-        //       type: 'success',
-        //       title: 'Nota subida con éxito',
-        //       text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
-        //     });
-        //
-        //     vm.$root.$emit('refresh');
-        //
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //     vm.$notify({
-        //       group: 'foo',
-        //       type: 'error',
-        //       title: 'Ha ocurrido un error',
-        //       text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
-        //     });
-        //   });
+              vm.$root.$emit('refresh');
+
+            })
+            .catch(function (error) {
+                console.log(error);
+                vm.$notify({
+                  group: 'foo',
+                  type: 'error',
+                  title: 'Ha ocurrido un error',
+                  text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
+                });
+            });
+        } else {
+            vm.$notify({
+              group: 'foo',
+              type: 'warn',
+              title: 'Rellena todos los campos',
+              text: 'Hay campos sin rellenar, por favor, rellena todos los campos antes de enviar el formulario.'
+            });
+        }
       }
     },
     mounted() {
       const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
-      this.$axios.get('http://127.0.0.1:8000/api/users/')
+      this.$axios.get('http://127.0.0.1:8000/users/')
         .then(function (response) {
           response.data.forEach(user => vm.options.push(user.username));
         })

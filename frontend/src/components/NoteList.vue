@@ -18,7 +18,7 @@
        loadTable() {
          const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
-         this.$axios.get('http://127.0.0.1:8000/api/notes/')
+         this.$axios.get('http://127.0.0.1:8000/notes/')
           .then(function (response) {
             vm.items = response.data
 
