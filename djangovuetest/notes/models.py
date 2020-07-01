@@ -18,7 +18,7 @@ class Note(models.Model):
     date = models.DateField(null=False, default=datetime.date.today)
     end_date = models.DateField(default=datetime.date.today)
     note = models.TextField(max_length=280, null=False)
-    adjunto = models.FileField(upload_to='adjuntos/', null=False)
+    adjunto = models.FileField(upload_to='adjuntos/', null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', null=False)
     task = models.BooleanField(default=False)
     tag = models.CharField(max_length=280, null=False)
