@@ -5,7 +5,6 @@ frontend/node_modules
 djangovuetest/__pycache__/
 djangovuetest/notes/__pycache__/
 **/__pycache__/*
-**/migrations/*
 *.pyc
 *.pyo
 /adjuntos/*
