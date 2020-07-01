@@ -51,4 +51,7 @@ npm run dev
 ```
 
 Una vez que esté todo arrancado correctamente, tan solo se ha de acceder a 
-localhost:8080 y probar la app.
+localhost:8080 y probar la app. 
+
+Para ver que los adjuntos se han subido correctamente,
+ tan solo hay que dirigirse /adjuntos en la raiz del proyecto.
