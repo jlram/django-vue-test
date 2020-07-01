@@ -19,14 +19,14 @@ from django.urls import path, include
 from rest_framework import routers
 from djangovuetest.notes.views import UserViewSet, NoteView
 
+# Router en el cual incluimos las rutas de los viewsets
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+router.register(r'', UserViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/', include(router.urls)),
-    path('api/notes/', NoteView.as_view(), name="notes")
-
+    path('users/', include(router.urls)),
+    path('notes/', NoteView.as_view(), name="notes")
 ]
