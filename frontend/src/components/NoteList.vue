@@ -1,7 +1,7 @@
 <template>
   <b-row>
     <b-col cols="12" class="mt-5">
-        <b-table striped hover :items="items" responsive="xl" class="mt-5"></b-table>
+        <b-table striped hover :items="items" responsive class="mt-5"></b-table>
     </b-col>
   </b-row>
 </template>
@@ -23,8 +23,8 @@
             vm.items = response.data
 
             vm.items.forEach(item => {
-              if(item.note.length > 20) {
-                item.note = item.note.substring(1, 20) + '...';
+              if(item.note.length > 10) {
+                item.note = item.note.substring(1, 10) + '...';
               }
             });
           })

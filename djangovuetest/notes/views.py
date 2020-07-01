@@ -2,11 +2,13 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from rest_framework import viewsets
+from rest_framework import viewsets, status, serializers
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from djangovuetest.notes.models import Note
 from djangovuetest.notes.serializers import UserSerializer, NoteSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -14,24 +16,24 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class NoteViewSet(viewsets.ModelViewSet):
-    queryset = Note.objects.all().order_by('-date')
-    serializer_class = NoteSerializer
+class NoteView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
 
-    def list(self, request):
+    def get(self, request):
         queryset = Note.objects.all().order_by('-id')
         serializer = NoteSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def create(self, validated_data):
-        note = Note.objects.create(
-            end_date=validated_data.data['end_date'],
-            note=validated_data.data['note'],
-            user=User.objects.filter(username=validated_data.data['user']).first(),
-            task=validated_data.data['task'],
-            tag=validated_data.data['tag'],
-            type=validated_data.data['type'],
-        )
+    def post(self, request, *args, **kwargs):
+        serializer = NoteSerializer(data=request.data)
 
-        return HttpResponse(status=200) if note else HttpResponse(status=400)
+        serializer.initial_data['task'] = True if serializer.initial_data['task'] == 'true' else False
+        serializer.initial_data['user'] = User.objects.filter(username=serializer.initial_data['user']).first().id
+
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

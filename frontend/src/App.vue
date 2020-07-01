@@ -21,10 +21,8 @@
 
 <style>
 
-  .vue-notification {
-    position: absolute;
-    top: 120px;
-    right: 20px;
+  .vue-notification-group {
+    margin-top: 120px;
   }
 
   #app {

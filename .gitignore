@@ -8,4 +8,5 @@ djangovuetest/notes/__pycache__/
 **/migrations/*
 *.pyc
 *.pyo
+/adjuntos/*
 

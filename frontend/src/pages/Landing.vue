@@ -26,7 +26,7 @@
 
 <style scoped>
   #contenedor {
-    width: 40%;
+    width: 50%;
   }
 
   @media (max-width: 768px) {

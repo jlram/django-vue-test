@@ -17,7 +17,6 @@
         <b-form-file
           id="file"
           class="mt-4"
-          v-model="file"
           placeholder="Adjunta un archivo..."
           drop-placeholder="Drop file here..."></b-form-file>
 
@@ -72,45 +71,90 @@
         text: '',
         tag: '',
         fechavalue: new Date().toISOString().slice(0,10),
-        file: [],
         status: 'task'
         })
     },
     methods: {
-      submitForm() {
+      submitForm: function () {
 
         const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
-        this.$axios.post('http://127.0.0.1:8000/api/notes/', {
-        end_date: this.fechavalue,
-        note: this.text,
-        task: status === 'task',
-        tag: this.tag,
-        type: this.tipo,
-        user: this.user
-        })
-        .then(function (response) {
-          console.log(response);
+        console.log(document.getElementById('file').files[0])
 
-          vm.$notify({
-            group: 'foo',
-            type: 'success',
-            title: 'Nota subida con éxito',
-            text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
+        let bodyFormData = new FormData();
+        bodyFormData.set('end_date', this.fechavalue);
+        bodyFormData.set('note', this.text);
+        bodyFormData.set('task', this.status === 'task');
+        bodyFormData.set('tag', this.tag);
+        bodyFormData.set('type', this.tipo);
+        bodyFormData.set('user', this.user);
+        bodyFormData.append('adjunto', document.getElementById('file').files[0]);
+
+
+        this.$axios({
+          method: 'post',
+          url: 'http://127.0.0.1:8000/api/notes/',
+          data: bodyFormData,
+          headers: {'Content-Type': 'multipart/form-data' }
+          })
+          .then(function (response) {
+              console.log(response);
+
+             vm.$notify({
+              group: 'foo',
+              type: 'success',
+              title: 'Nota subida con éxito',
+              text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
+            });
+
+            vm.$root.$emit('refresh');
+
+          })
+          .catch(function (error) {
+              console.log(error);
+              vm.$notify({
+                group: 'foo',
+                type: 'error',
+                title: 'Ha ocurrido un error',
+                text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
+              });
           });
 
-          vm.$root.$emit('refresh');
-
-        })
-        .catch(function (error) {
-          console.log(error);
-          vm.$notify({
-            group: 'foo',
-            type: 'error',
-            title: 'Ha ocurrido un error',
-            text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
-          });
-        });
+        // this.$axios('http://127.0.0.1:8000/api/notes/', {
+        //   end_date: this.fechavalue,
+        //   note: this.text,
+        //   adjunto: document.getElementById('file').files[0],
+        //   task: status === 'task',
+        //   tag: this.tag,
+        //   type: this.tipo,
+        //   user: this.user
+        // }, {
+        //   headers: {
+        //     "Content-Type": 'multipart/form-data'
+        //   }
+        // })
+        //   .then(function (response) {
+        //     console.log(response);
+        //
+        //     vm.$notify({
+        //       group: 'foo',
+        //       type: 'success',
+        //       title: 'Nota subida con éxito',
+        //       text: 'La nota para ' + vm.user + ' se ha subido correctamente al servidor.'
+        //     });
+        //
+        //     vm.$root.$emit('refresh');
+        //
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //     vm.$notify({
+        //       group: 'foo',
+        //       type: 'error',
+        //       title: 'Ha ocurrido un error',
+        //       text: 'Por favor, comprueba que todos los datos han sido rellenados correctamente.'
+        //     });
+        //   });
       }
     },
     mounted() {
