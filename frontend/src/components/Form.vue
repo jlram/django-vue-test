@@ -78,6 +78,8 @@
     methods: {
       submitForm: function () {
 
+        this.$store.commit('increment')
+
         const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
         // Creamos un FormData para recoger toda la informacion que se va a
