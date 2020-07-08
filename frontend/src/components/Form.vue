@@ -78,8 +78,6 @@
     methods: {
       submitForm: function () {
 
-        this.$store.commit('increment')
-
         const vm = this; // Declaracion auxiliar del this para poder usarlo en then
 
         // Creamos un FormData para recoger toda la informacion que se va a
@@ -116,7 +114,7 @@
 
               // Uso de un bus para emitir eventos entre componentes. Podria haber usado Vuex
               // pero no lo he visto necesario para tan solo un evento.
-              vm.$root.$emit('refresh');
+              vm.$store.commit('increment')
 
             })
             .catch(function (error) {

@@ -49,10 +49,6 @@
 
     mounted() { // Metodo del ciclo de vida que se activa al montar el componente
       this.loadTable()
-
-      this.$root.$on('refresh', data => {
-          this.loadTable()
-      });
     }
   }
 </script>

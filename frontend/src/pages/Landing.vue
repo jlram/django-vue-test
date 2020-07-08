@@ -2,9 +2,9 @@
   <div>
     <NavBar></NavBar>
     <b-container id="contenedor">
-    <Form></Form>
-    <NoteList></NoteList>
-  </b-container>
+      <Form></Form>
+      <NoteList :key=this.$store.state.count></NoteList>
+    </b-container>
   </div>
 </template>
 
